@@ -100,3 +100,13 @@ export function saveAuth(auth: StoredAuth | null): void {
 export function todayKey(d = new Date()): string {
   return d.toISOString().slice(0, 10);
 }
+
+/** Permanently remove all locally stored account + progress data (account deletion). */
+export function wipeAllLocalData(): void {
+  try {
+    localStorage.removeItem(KEY);
+    localStorage.removeItem(AUTH_KEY);
+  } catch {
+    /* ignore */
+  }
+}

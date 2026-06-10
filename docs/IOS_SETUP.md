@@ -60,14 +60,22 @@ npm run ios:sync   # rebuild + copy into the iOS project
 
 ## 4. App icons & splash screen
 
-The default Capacitor icon is a placeholder. To set your own:
+A branded StudyArena icon and dark splash are **already generated** (source art in `assets/icon.svg` / `assets/splash.svg`). To re-generate after editing the art:
 
-1. Install the asset generator and drop a 1024×1024 `icon.png` (and optional `splash.png`) into a `resources/` folder:
-   ```bash
-   npm install -D @capacitor/assets
-   npx capacitor-assets generate --ios
-   ```
-2. Re-run `npm run ios:sync`.
+```bash
+node -e "const s=require('sharp'),f=require('fs');(async()=>{await s(f.readFileSync('assets/icon.svg'),{density:384}).resize(1024,1024).png().toFile('assets/icon.png');await s(f.readFileSync('assets/splash.svg'),{density:144}).resize(2732,2732).png().toFile('assets/splash.png');await s(f.readFileSync('assets/splash.svg'),{density:144}).resize(2732,2732).png().toFile('assets/splash-dark.png');})()"
+npx capacitor-assets generate --ios
+```
+
+## 4b. Enable "Sign in with Apple" capability
+
+Apple sign-in needs an entitlement that must be added in Xcode (it requires your Team):
+
+1. Open the project (`npm run ios`), select the **App** target.
+2. **Signing & Capabilities → + Capability → Sign in with Apple**.
+3. In **App Store Connect / Apple Developer**, make sure your App ID has the **Sign in with Apple** capability enabled too.
+
+> Local notifications need **no** Info.plist entry — iOS prompts for permission at runtime when you toggle *Streak reminders* on.
 
 ---
 

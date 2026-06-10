@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Camera, ChevronRight, Globe, LogOut, Pencil, RotateCcw, Trophy } from 'lucide-react';
+import { Bell, Camera, ChevronRight, FileText, Globe, LogOut, Pencil, RotateCcw, Settings, Shield, Trash2, Trophy } from 'lucide-react';
 import { useData } from '../context/DataContext';
 import { useAuth } from '../context/AuthContext';
 import { Card, SectionTitle } from '../components/ui/Card';
@@ -9,19 +9,31 @@ import { Avatar } from '../components/ui/Avatar';
 import { Stat } from '../components/ui/Stat';
 import { Button } from '../components/ui/Button';
 import { Sheet } from '../components/ui/Sheet';
+import { Toggle } from '../components/ui/Toggle';
 import { ProgressBar } from '../components/ui/Progress';
 import { Icon } from '../components/ui/Icon';
 import { ACHIEVEMENTS } from '../lib/achievements';
 import { EU_COUNTRIES, countryName, flag, fmtNumber } from '../lib/format';
+import { notificationsEnabled, toggleStreakReminder } from '../notifications';
+import { LEGAL_URLS } from '../lib/legal';
 
 export function Profile() {
   const { user, leaderboard, achievementProgress, updateProfile, resetDemo } = useData();
-  const { signOut } = useAuth();
+  const { signOut, deleteAccount } = useAuth();
   const [edit, setEdit] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleteText, setDeleteText] = useState('');
+  const [notifs, setNotifs] = useState(notificationsEnabled());
   const [draftName, setDraftName] = useState(user.username);
   const [draftCountry, setDraftCountry] = useState(user.country);
   const [draftAvatar, setDraftAvatar] = useState(user.avatarUrl);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  async function onToggleNotifs(next: boolean) {
+    const ok = await toggleStreakReminder(next);
+    setNotifs(next ? ok : false);
+  }
 
   const globalRank = useMemo(() => leaderboard('global').find((r) => r.isMe)?.rank ?? 0, [leaderboard]);
   const countryRank = useMemo(() => leaderboard('country').find((r) => r.isMe)?.rank ?? 0, [leaderboard]);
@@ -140,13 +152,73 @@ export function Profile() {
 
       {/* Account actions */}
       <div className="grid grid-cols-2 gap-3 pt-1">
-        <Button variant="ghost" onClick={() => { if (confirm('Reset all demo progress?')) resetDemo(); }}>
-          <RotateCcw size={16} /> Reset demo
+        <Button variant="ghost" onClick={() => setSettingsOpen(true)}>
+          <Settings size={16} /> Settings
         </Button>
         <Button variant="danger" onClick={signOut}>
           <LogOut size={16} /> Sign out
         </Button>
       </div>
+
+      {/* Settings sheet */}
+      <Sheet open={settingsOpen} onClose={() => setSettingsOpen(false)} title="Settings">
+        <div className="space-y-3">
+          {/* Notifications */}
+          <div className="flex items-center gap-3 rounded-2xl bg-white/[0.04] border border-white/8 px-4 py-3">
+            <span className="grid place-items-center w-9 h-9 rounded-xl bg-orange-500/15 text-orange-300"><Bell size={18} /></span>
+            <div className="flex-1">
+              <p className="font-semibold text-sm">Streak reminders</p>
+              <p className="text-xs text-slate-400">A daily nudge so you never break your streak.</p>
+            </div>
+            <Toggle checked={notifs} onChange={onToggleNotifs} aria-label="Streak reminders" />
+          </div>
+
+          {/* Legal */}
+          <a href={LEGAL_URLS.privacy} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-2xl bg-white/[0.04] border border-white/8 px-4 py-3">
+            <span className="grid place-items-center w-9 h-9 rounded-xl bg-brand-500/15 text-brand-300"><Shield size={18} /></span>
+            <span className="flex-1 font-semibold text-sm">Privacy Policy</span>
+            <ChevronRight size={16} className="text-slate-500" />
+          </a>
+          <a href={LEGAL_URLS.terms} target="_blank" rel="noreferrer" className="flex items-center gap-3 rounded-2xl bg-white/[0.04] border border-white/8 px-4 py-3">
+            <span className="grid place-items-center w-9 h-9 rounded-xl bg-brand-500/15 text-brand-300"><FileText size={18} /></span>
+            <span className="flex-1 font-semibold text-sm">Terms of Service</span>
+            <ChevronRight size={16} className="text-slate-500" />
+          </a>
+
+          <button onClick={() => { if (confirm('Reset all demo progress?')) { resetDemo(); setSettingsOpen(false); } }} className="w-full flex items-center gap-3 rounded-2xl bg-white/[0.04] border border-white/8 px-4 py-3 text-left">
+            <span className="grid place-items-center w-9 h-9 rounded-xl bg-white/8 text-slate-300"><RotateCcw size={18} /></span>
+            <span className="flex-1 font-semibold text-sm">Reset demo data</span>
+          </button>
+
+          {/* Delete account — required by App Store Guideline 5.1.1(v) */}
+          <button onClick={() => { setSettingsOpen(false); setDeleteText(''); setConfirmDelete(true); }} className="w-full flex items-center gap-3 rounded-2xl bg-loss/10 border border-loss/25 px-4 py-3 text-left">
+            <span className="grid place-items-center w-9 h-9 rounded-xl bg-loss/20 text-loss"><Trash2 size={18} /></span>
+            <div className="flex-1">
+              <p className="font-semibold text-sm text-loss">Delete account</p>
+              <p className="text-xs text-loss/70">Permanently erase your account and all data.</p>
+            </div>
+          </button>
+
+          <p className="text-center text-[11px] text-slate-600 pt-1">StudyArena · v0.1.0</p>
+        </div>
+      </Sheet>
+
+      {/* Delete confirmation */}
+      <Sheet open={confirmDelete} onClose={() => setConfirmDelete(false)} title="Delete account?">
+        <div className="space-y-4">
+          <p className="text-sm text-slate-300">
+            This <span className="font-bold text-loss">permanently</span> deletes your profile, stats, streak, battles and achievements. This cannot be undone.
+          </p>
+          <label className="block rounded-2xl bg-white/[0.04] border border-white/8 px-3.5 py-2.5">
+            <span className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-0.5">Type DELETE to confirm</span>
+            <input value={deleteText} onChange={(e) => setDeleteText(e.target.value)} placeholder="DELETE" className="w-full bg-transparent outline-none text-white placeholder:text-slate-600 tracking-widest" />
+          </label>
+          <Button variant="danger" full size="lg" disabled={deleteText.trim().toUpperCase() !== 'DELETE'} onClick={() => void deleteAccount()}>
+            <Trash2 size={18} /> Delete my account
+          </Button>
+          <Button variant="ghost" full onClick={() => setConfirmDelete(false)}>Cancel</Button>
+        </div>
+      </Sheet>
 
       {/* Edit sheet */}
       <Sheet open={edit} onClose={() => setEdit(false)} title="Edit Profile">

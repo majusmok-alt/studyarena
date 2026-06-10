@@ -1,0 +1,38 @@
+<svg width="2732" height="2732" viewBox="0 0 2732 2732" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="sbg" cx="50%" cy="42%" r="60%">
+      <stop offset="0%" stop-color="#11142a"/>
+      <stop offset="55%" stop-color="#0a0c16"/>
+      <stop offset="100%" stop-color="#06070d"/>
+    </radialGradient>
+    <radialGradient id="sglow" cx="50%" cy="42%" r="38%">
+      <stop offset="0%" stop-color="#6c63f5" stop-opacity="0.5"/>
+      <stop offset="70%" stop-color="#6c63f5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sshield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8587fb"/>
+      <stop offset="55%" stop-color="#6c63f5"/>
+      <stop offset="100%" stop-color="#4c37c9"/>
+    </linearGradient>
+    <linearGradient id="sstar" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#d7fbff"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="2732" height="2732" fill="url(#sbg)"/>
+  <rect width="2732" height="2732" fill="url(#sglow)"/>
+
+  <g transform="translate(1366 1230) scale(1.25)">
+    <path d="M0 -300 L240 -210 V70 C240 220 130 330 0 392 C-130 330 -240 220 -240 70 V-210 Z"
+          fill="url(#sshield)" stroke="#a3a8ff" stroke-width="14"/>
+    <circle cx="0" cy="-10" r="172" fill="none" stroke="#16c5d8" stroke-width="10" opacity="0.55"/>
+    <path d="M0 -150 L47 -47 L160 -34 L78 44 L100 156 L0 100 L-100 156 L-78 44 L-160 -34 L-47 -47 Z"
+          fill="url(#sstar)"/>
+  </g>
+
+  <text x="1366" y="1880" text-anchor="middle" font-family="Helvetica, Arial, sans-serif"
+        font-size="150" font-weight="800" letter-spacing="2" fill="#ffffff">StudyArena</text>
+  <text x="1366" y="1990" text-anchor="middle" font-family="Helvetica, Arial, sans-serif"
+        font-size="64" font-weight="600" letter-spacing="10" fill="#8587fb">STUDY · COMPETE · CLIMB</text>
+</svg>

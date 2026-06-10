@@ -1,0 +1,45 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#11142a"/>
+      <stop offset="55%" stop-color="#0a0c16"/>
+      <stop offset="100%" stop-color="#06070d"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#6c63f5" stop-opacity="0.55"/>
+      <stop offset="60%" stop-color="#6c63f5" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8587fb"/>
+      <stop offset="55%" stop-color="#6c63f5"/>
+      <stop offset="100%" stop-color="#4c37c9"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"/>
+      <stop offset="45%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="star" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#d7fbff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+
+  <!-- Shield -->
+  <g transform="translate(512 520)">
+    <path d="M0 -300 L240 -210 V70 C240 220 130 330 0 392 C-130 330 -240 220 -240 70 V-210 Z"
+          fill="url(#shield)" stroke="#a3a8ff" stroke-width="14"/>
+    <path d="M0 -300 L240 -210 V70 C240 220 130 330 0 392 C-130 330 -240 220 -240 70 V-210 Z"
+          fill="url(#sheen)" opacity="0.65"/>
+
+    <!-- Accent ring -->
+    <circle cx="0" cy="-10" r="172" fill="none" stroke="#16c5d8" stroke-width="10" opacity="0.55"/>
+
+    <!-- Star emblem -->
+    <path d="M0 -150 L47 -47 L160 -34 L78 44 L100 156 L0 100 L-100 156 L-78 44 L-160 -34 L-47 -47 Z"
+          fill="url(#star)"/>
+  </g>
+</svg>

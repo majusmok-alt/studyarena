@@ -8,7 +8,7 @@ import { EU_COUNTRIES, countryName, flag } from '../lib/format';
 import { RANKS } from '../lib/ranks';
 
 export function Auth() {
-  const { signUpEmail, signInGoogle, usingSupabase } = useAuth();
+  const { signUpEmail, signInGoogle, signInApple, usingSupabase } = useAuth();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [country, setCountry] = useState('DE');
@@ -73,9 +73,20 @@ export function Auth() {
           transition={{ delay: 0.25, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           className="glass-strong rounded-4xl p-5 mt-8 shadow-card"
         >
-          <Button variant="ghost" full size="lg" onClick={() => void signInGoogle()}>
-            <GoogleGlyph /> Continue with Google
-          </Button>
+          <div className="space-y-2.5">
+            <Button
+              variant="ghost"
+              full
+              size="lg"
+              className="bg-white text-ink-950 hover:bg-white/90 border-transparent"
+              onClick={() => void signInApple()}
+            >
+              <AppleGlyph /> Continue with Apple
+            </Button>
+            <Button variant="ghost" full size="lg" onClick={() => void signInGoogle()}>
+              <GoogleGlyph /> Continue with Google
+            </Button>
+          </div>
 
           <div className="flex items-center gap-3 my-4">
             <div className="h-px flex-1 bg-white/10" />
@@ -165,6 +176,14 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
       <span className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-0.5">{label}</span>
       {children}
     </label>
+  );
+}
+
+function AppleGlyph() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M17.05 12.04c-.03-2.6 2.12-3.85 2.22-3.91-1.21-1.77-3.1-2.02-3.77-2.04-1.6-.16-3.13.94-3.94.94-.81 0-2.07-.92-3.4-.9-1.75.03-3.36 1.02-4.26 2.58-1.82 3.16-.47 7.83 1.3 10.39.86 1.25 1.89 2.66 3.24 2.61 1.3-.05 1.79-.84 3.36-.84 1.57 0 2.01.84 3.38.81 1.4-.02 2.28-1.28 3.13-2.54.99-1.45 1.4-2.86 1.42-2.93-.03-.01-2.72-1.04-2.75-4.13.0z M14.6 4.42c.72-.87 1.2-2.08 1.07-3.28-1.03.04-2.28.69-3.02 1.56-.66.77-1.24 2-1.08 3.18 1.15.09 2.32-.59 3.03-1.46z" />
+    </svg>
   );
 }
 
