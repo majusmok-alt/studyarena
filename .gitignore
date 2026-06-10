@@ -8,3 +8,6 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .claude/
+
+# TypeScript incremental build cache
+*.tsbuildinfo

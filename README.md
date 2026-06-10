@@ -57,6 +57,29 @@ npm run preview  # preview the production build
    ```
 4. Restart the dev server. The app auto-detects the credentials (`isSupabaseEnabled`) and switches the auth flow to Supabase. The data layer is isolated in [`src/lib/store.ts`](src/lib/store.ts) / [`src/context/DataContext.tsx`](src/context/DataContext.tsx) — swap the localStorage calls for Supabase queries there to go fully live.
 
+## 📱 Native iOS app (Capacitor)
+
+The same codebase ships as a **native iOS app** via [Capacitor](https://capacitorjs.com) — the web UI runs inside a native shell with real native APIs (status bar, splash screen, haptics, hardware back). Native calls are guarded by `isNativePlatform()` in [`src/native.ts`](src/native.ts), so the web build is unaffected.
+
+**Prerequisites:** [Xcode](https://apps.apple.com/app/xcode/id497799835) (full, from the Mac App Store). Capacitor 8 uses **Swift Package Manager** — no CocoaPods required.
+
+```bash
+npm run ios        # build web → sync → open the project in Xcode
+```
+
+Then in Xcode: select a simulator or your connected iPhone and press **▶︎ Run**. To publish, set your Team under *Signing & Capabilities*, then **Product → Archive → Distribute App** to App Store Connect.
+
+Other handy scripts:
+
+```bash
+npm run ios:sync   # rebuild web + copy into the iOS project (no Xcode open)
+npm run cap:sync   # sync all native platforms
+```
+
+> The native project lives in [`ios/`](ios/) and is committed; build artifacts and the copied web assets are git-ignored. After any web change, run `npm run ios:sync` (or `npm run ios`) to refresh the app.
+
+See [`docs/IOS_SETUP.md`](docs/IOS_SETUP.md) for the full first-time walkthrough and App Store checklist.
+
 ## 🗂️ Architecture
 
 ```

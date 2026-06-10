@@ -11,6 +11,7 @@ import { Icon } from '../components/ui/Icon';
 import { Victory } from '../components/Victory';
 import { rewardsForSession } from '../lib/xp';
 import { clsx, fmtClock } from '../lib/format';
+import { haptic } from '../native';
 
 const GOALS = [
   { min: 0, label: 'Free' },
@@ -54,6 +55,7 @@ export function Study() {
   }
   function finish() {
     setRunning(false);
+    void haptic();
     const result = finishSession({
       subject,
       customSubject: subject === 'custom' ? custom || 'Custom' : undefined,
