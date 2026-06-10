@@ -60,35 +60,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAuth(next);
       },
       async signInApple() {
-        // On a real iPhone this uses the native Sign in with Apple sheet.
-        if (isNative) {
-          try {
-            const { SignInWithApple } = await import('@capacitor-community/apple-sign-in');
-            const res = await SignInWithApple.authorize({
-              clientId: 'com.majusmok.studyarena',
-              redirectURI: 'https://studyarena.app/auth/callback',
-              scopes: 'email name',
-            });
-            const r = res.response;
-            const name = [r.givenName, r.familyName].filter(Boolean).join('').toLowerCase();
-            const next: StoredAuth = {
-              email: r.email ?? 'apple@studyarena.app',
-              username: name || 'you',
-              country: 'DE',
-              avatarUrl: null,
-            };
-            if (isSupabaseEnabled && supabase && r.identityToken) {
-              await supabase.auth.signInWithIdToken({ provider: 'apple', token: r.identityToken });
-            }
-            saveAuth(next);
-            setAuth(next);
-            return;
-          } catch {
-            /* user cancelled or plugin unavailable — fall through to web flow */
-          }
-        }
+        // Sign in with Apple via Supabase OAuth — opens the system Apple sheet
+        // (ASWebAuthenticationSession) on iOS and a popup on the web. This avoids
+        // a native plugin (the community Apple plugin has no Capacitor 8 build yet)
+        // while still satisfying App Store Guideline 4.8.
         if (isSupabaseEnabled && supabase) {
-          await supabase.auth.signInWithOAuth({ provider: 'apple' });
+          await supabase.auth.signInWithOAuth({
+            provider: 'apple',
+            options: isNative ? { redirectTo: 'com.majusmok.studyarena://auth/callback' } : undefined,
+          });
           return;
         }
         const next: StoredAuth = {

@@ -14,7 +14,6 @@
     "cap:sync": "npm run build && npx cap sync"
   },
   "dependencies": {
-    "@capacitor-community/apple-sign-in": "^7.1.0",
     "@capacitor/app": "^8.1.0",
     "@capacitor/core": "^8.4.0",
     "@capacitor/haptics": "^8.0.2",
