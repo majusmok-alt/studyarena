@@ -11,7 +11,9 @@
     "lint": "tsc -b --noEmit",
     "ios": "npm run build && npx cap sync ios && npx cap open ios",
     "ios:sync": "npm run build && npx cap sync ios",
-    "cap:sync": "npm run build && npx cap sync"
+    "cap:sync": "npm run build && npx cap sync",
+    "video:studio": "remotion studio src/remotion/index.ts",
+    "video:render": "remotion render src/remotion/index.ts Intro out/intro.mp4"
   },
   "dependencies": {
     "@capacitor/app": "^8.1.0",
@@ -22,17 +24,20 @@
     "@capacitor/local-notifications": "^8.2.0",
     "@capacitor/splash-screen": "^8.0.1",
     "@capacitor/status-bar": "^8.0.2",
+    "@remotion/player": "4.0.532",
     "@supabase/supabase-js": "^2.45.4",
     "clsx": "^2.1.1",
     "framer-motion": "^11.5.4",
     "lucide-react": "^0.439.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2"
+    "react-router-dom": "^6.26.2",
+    "remotion": "4.0.532"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
     "@capacitor/cli": "^8.4.0",
+    "@remotion/cli": "4.0.532",
     "@types/node": "^20.19.42",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",

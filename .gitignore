@@ -11,3 +11,4 @@ dist-ssr
 
 # TypeScript incremental build cache
 *.tsbuildinfo
+out/
